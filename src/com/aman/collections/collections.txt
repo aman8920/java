@@ -1,0 +1,366 @@
+collections are used to represent a group of object as a single entity and contains a lot of interfaces like list
+sets, queue, dequeue
+
+Iterable
+    ↓
+Collection
+    ├── List
+    ├── Set
+    ├── Queue
+    └── Deque
+
+Map
+
+
+
+
+1. Collection Interface
+
+// Basic operations
+boolean add(E e);
+boolean remove(Object o);
+boolean contains(Object o);
+int size();
+boolean isEmpty();
+void clear();
+
+// Bulk operations
+boolean addAll(Collection<? extends E> c);
+boolean removeAll(Collection<?> c);
+boolean retainAll(Collection<?> c);
+boolean containsAll(Collection<?> c);
+
+// Array operations
+Object[] toArray();
+<T> T[] toArray(T[] a);
+
+// Iteration
+Iterator<E> iterator();
+
+Collection<String> collection = new ArrayList<>();
+collection.add("Apple");
+collection.add("Banana");
+collection.add("Orange");
+
+System.out.println(collection.size()); // 3
+System.out.println(collection.contains("Apple")); // true
+
+
+
+
+2. List Interface
+
+// Basic operations
+boolean add(E e);
+boolean remove(Object o);
+boolean contains(Object o);
+int size();
+boolean isEmpty();
+void clear();
+
+// Bulk operations
+boolean addAll(Collection<? extends E> c);
+boolean removeAll(Collection<?> c);
+boolean retainAll(Collection<?> c);
+boolean containsAll(Collection<?> c);
+
+// Array operations
+Object[] toArray();
+<T> T[] toArray(T[] a);
+
+// Iteration
+Iterator<E> iterator();
+
+
+
+3. Set Interface
+Collection with no duplicate elements
+
+Characteristics:
+No duplicate elements (based on equals())
+
+At most one null element
+
+No guarantee of order (unless using specific implementations)
+
+Key Methods:
+(Same as Collection interface - no additional methods, just different contract)
+
+Implementations:
+HashSet - Hash table implementation, unordered
+
+LinkedHashSet - Hash table + linked list, maintains insertion order
+
+TreeSet - Red-black tree, sorted order (implements SortedSet/NavigableSet)
+
+Example:
+java
+Set<Integer> numbers = new HashSet<>();
+numbers.add(1);
+numbers.add(2);
+numbers.add(1); // Duplicate, won't be added
+numbers.add(3);
+
+System.out.println(numbers.size()); // 3
+4. SortedSet and NavigableSet Interfaces
+Extended Set interfaces for sorted collections
+
+SortedSet Methods:
+java
+Comparator<? super E> comparator();
+E first();
+E last();
+SortedSet<E> headSet(E toElement);
+SortedSet<E> tailSet(E fromElement);
+SortedSet<E> subSet(E fromElement, E toElement);
+NavigableSet Methods (extends SortedSet):
+java
+E lower(E e);     // Greatest element < e
+E floor(E e);      // Greatest element ≤ e
+E ceiling(E e);    // Smallest element ≥ e
+E higher(E e);     // Smallest element > e
+
+E pollFirst();     // Remove and return first
+E pollLast();      // Remove and return last
+
+NavigableSet<E> descendingSet();
+Iterator<E> descendingIterator();
+Example:
+java
+NavigableSet<Integer> sortedSet = new TreeSet<>();
+sortedSet.addAll(Arrays.asList(10, 20, 30, 40, 50));
+
+System.out.println(sortedSet.lower(25)); // 20
+System.out.println(sortedSet.higher(25)); // 30
+System.out.println(sortedSet.floor(25)); // 20
+System.out.println(sortedSet.ceiling(25)); // 30
+5. Queue Interface
+Collection designed for holding elements prior to processing
+
+Characteristics:
+Typically FIFO (First-In-First-Out)
+
+Supports all Collection operations plus insertion, extraction, inspection
+
+Key Methods:
+java
+// Insert
+boolean add(E e);      // Throws exception if full
+boolean offer(E e);    // Returns false if full
+
+// Remove and examine
+E remove();           // Throws exception if empty
+E poll();             // Returns null if empty
+
+// Examine
+E element();          // Throws exception if empty
+E peek();             // Returns null if empty
+Implementations:
+LinkedList - Implements both List and Queue
+
+PriorityQueue - Orders elements by natural ordering or comparator
+
+ArrayDeque - Resizable array implementation
+
+Example:
+java
+Queue<String> queue = new LinkedList<>();
+queue.offer("First");
+queue.offer("Second");
+queue.offer("Third");
+
+System.out.println(queue.poll()); // "First"
+System.out.println(queue.peek()); // "Second"
+6. Deque Interface
+Double-ended queue - supports insertion/removal at both ends
+
+Key Methods:
+java
+// Add/Remove at both ends
+void addFirst(E e);
+void addLast(E e);
+boolean offerFirst(E e);
+boolean offerLast(E e);
+
+E removeFirst();
+E removeLast();
+E pollFirst();
+E pollLast();
+
+// Examine both ends
+E getFirst();
+E getLast();
+E peekFirst();
+E peekLast();
+
+// Stack operations
+void push(E e);    // addFirst
+E pop();           // removeFirst
+Implementations:
+ArrayDeque - Resizable array implementation
+
+LinkedList - Doubly-linked list implementation
+
+Example:
+java
+Deque<String> deque = new ArrayDeque<>();
+deque.addFirst("First");
+deque.addLast("Last");
+deque.offerFirst("VeryFirst");
+
+System.out.println(deque.getFirst()); // "VeryFirst"
+System.out.println(deque.getLast());  // "Last"
+7. Map Interface
+Key-value pairs (not part of Collection hierarchy)
+
+Characteristics:
+Maps keys to values
+
+No duplicate keys
+
+Each key maps to at most one value
+
+Key Methods:
+java
+// Basic operations
+V put(K key, V value);
+V get(Object key);
+V remove(Object key);
+boolean containsKey(Object key);
+boolean containsValue(Object value);
+int size();
+boolean isEmpty();
+void clear();
+
+// Bulk operations
+void putAll(Map<? extends K, ? extends V> m);
+    
+// Collection views
+Set<K> keySet();
+Collection<V> values();
+Set<Map.Entry<K, V>> entrySet();
+
+// Entry interface
+interface Entry<K, V> {
+    K getKey();
+    V getValue();
+    V setValue(V value);
+}
+Implementations:
+HashMap - Hash table implementation
+
+LinkedHashMap - Maintains insertion/access order
+
+TreeMap - Red-black tree, sorted keys
+
+Hashtable - Legacy synchronized implementation
+
+ConcurrentHashMap - Thread-safe implementation
+
+Example:
+java
+Map<String, Integer> map = new HashMap<>();
+map.put("John", 25);
+map.put("Jane", 30);
+map.put("Bob", 28);
+
+System.out.println(map.get("Jane")); // 30
+
+// Iterating through entries
+for (Map.Entry<String, Integer> entry : map.entrySet()) {
+    System.out.println(entry.getKey() + ": " + entry.getValue());
+}
+8. SortedMap and NavigableMap Interfaces
+SortedMap Methods:
+java
+Comparator<? super K> comparator();
+K firstKey();
+K lastKey();
+SortedMap<K, V> headMap(K toKey);
+SortedMap<K, V> tailMap(K fromKey);
+SortedMap<K, V> subMap(K fromKey, K toKey);
+NavigableMap Methods:
+java
+Map.Entry<K, V> lowerEntry(K key);
+K lowerKey(K key);
+Map.Entry<K, V> floorEntry(K key);
+K floorKey(K key);
+Map.Entry<K, V> ceilingEntry(K key);
+K ceilingKey(K key);
+Map.Entry<K, V> higherEntry(K key);
+K higherKey(K key);
+
+Map.Entry<K, V> firstEntry();
+Map.Entry<K, V> lastEntry();
+Map.Entry<K, V> pollFirstEntry();
+Map.Entry<K, V> pollLastEntry();
+
+NavigableMap<K, V> descendingMap();
+NavigableSet<K> navigableKeySet();
+NavigableSet<K> descendingKeySet();
+Iteration Patterns
+Using Iterator:
+java
+List<String> list = new ArrayList<>();
+// ... add elements
+
+Iterator<String> iterator = list.iterator();
+while (iterator.hasNext()) {
+    String element = iterator.next();
+    // Process element
+    iterator.remove(); // Optional remove
+}
+Using for-each loop:
+java
+for (String element : list) {
+    System.out.println(element);
+}
+Using ListIterator (for Lists only):
+java
+ListIterator<String> listIterator = list.listIterator();
+while (listIterator.hasNext()) {
+    String element = listIterator.next();
+    if (condition) {
+        listIterator.set("Updated"); // Modify
+        listIterator.add("New");     // Add
+    }
+}
+Choosing the Right Collection
+Use Case	Interface	Implementation
+General purpose, indexed access	List	ArrayList
+Frequent insertions/deletions in middle	List	LinkedList
+No duplicates, no order needed	Set	HashSet
+No duplicates, insertion order	Set	LinkedHashSet
+No duplicates, sorted order	Set	TreeSet
+FIFO processing	Queue	LinkedList, ArrayDeque
+LIFO stack operations	Deque	ArrayDeque
+Key-value pairs, no order	Map	HashMap
+Key-value pairs, insertion order	Map	LinkedHashMap
+Key-value pairs, sorted keys	Map	TreeMap
+Thread-safe collections	All	Collections.synchronizedXXX()
+Best Practices
+Program to interfaces, not implementations:
+
+java
+// Good
+List<String> list = new ArrayList<>();
+
+// Bad
+ArrayList<String> list = new ArrayList<>();
+Use diamond operator (Java 7+):
+
+java
+List<String> list = new ArrayList<>();
+Map<String, Integer> map = new HashMap<>();
+Choose appropriate implementation based on your specific needs
+
+Consider thread safety - most collections are not thread-safe by default
+
+Use utility methods from Collections class:
+
+java
+Collections.sort(list);
+Collections.reverse(list);
+Collections.synchronizedList(list);
+Collections.unmodifiableList(list);
+
